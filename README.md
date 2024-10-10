@@ -1,3 +1,5 @@
+**This is a version modified for DESY, we're not affiliated with APS — please don't sue us! ☹️**
+
 # pyXPCSViewer
 A python-based interactive visualization tool to view XPCS dataset.
 
