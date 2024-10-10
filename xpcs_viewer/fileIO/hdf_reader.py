@@ -8,16 +8,12 @@ from .ftype_utils import get_ftype
 
 logger = logging.getLogger(__name__)
 
-# read the default.json in the home_directory
-home_dir = os.path.join(os.path.expanduser('~'), '.xpcs_viewer')
-if not os.path.isdir(home_dir):
-    os.mkdir(home_dir)
-key_fname = os.path.join(home_dir, 'default.json')
+key_fname = "default.json"
 
 # if no such file; then use 8idi configure
 # if not os.path.isfile(key_fname):
 # TODO: force update the configure file; 
-if True:
+if False:
     from .aps_8idi import key as aps_8idi_key
     with open(key_fname, 'w') as f:
         json.dump(aps_8idi_key, f, indent=4)
@@ -75,6 +71,10 @@ def get(fname, fields, mode='raw', ret_type='dict', ftype='legacy'):
     with h5py.File(fname, 'r') as HDF_Result:
         for key in fields:
             if mode == 'alias':
+                if ftype not in hdf_key:
+                    raise ValueError(f"cannot find {ftype} in HDF5 key config")
+                if key not in hdf_key[ftype]:
+                    raise ValueError(f"cannot find {key} in {hdf_key[ftype]}")
                 key2 = hdf_key[ftype][key]
             elif mode == 'raw':
                 key2 = key
@@ -92,13 +92,13 @@ def get(fname, fields, mode='raw', ret_type='dict', ftype='legacy'):
 
             if type(val) == np.ndarray:
                 # get rid of length=1 axies;
-                if key not in ['g2', 'g2_err', 'g2_full', 'g2_partials',
+                if key not in ['g2_full', 'g2_partials',
                                'ql_dyn', 'ql_sta']:
                     val = np.squeeze(val)
                 # ql_dyn and ql_sta must be an array, even there's only one
                 # element
-                if key in ['ql_dyn', 'ql_sta']:
-                    val = val[0]
+                # if key in ['ql_dyn', 'ql_sta']:
+                #     val = val[0]
 
             elif type(val) in [np.bytes_, bytes]:
                 # converts bytes to unicode;

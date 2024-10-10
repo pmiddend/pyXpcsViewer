@@ -96,7 +96,8 @@ class XpcsFile(object):
 
         # label is a short string to describe the file/filename
         self.label = create_id(fname)
-        self.ftype = get_ftype(self.full_path)
+        # self.ftype = get_ftype(self.full_path)
+        self.ftype = 'nexus'
         # print(fname, self.ftype)
 
         if self.ftype == 'nexus':

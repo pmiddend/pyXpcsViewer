@@ -200,23 +200,23 @@ class FileLocator(object):
         if alist in [[], None]:
             return
         if self.type is None:
-            self.type = self.get_type(alist[0])
+            self.type = 'Multitau'
 
         single_flag = True
 
         if len(alist) <= threshold:
             for x in alist:
                 if x not in self.target:
-                    t = self.get_type(x)
-                    if t not in ['Multitau', 'Twotime']:
-                        logger.info('Failed to get type for %s', x)
-                        continue
-                    if self.type is None:
-                        self.type = t
-                    elif t != self.type:
-                        logger.info('Mixed analysis type for %s. Discard', x)
-                        single_flag = False
-                        continue
+                    # t = self.get_type(x)
+                    # if t not in ['Multitau', 'Twotime']:
+                    #     logger.info('Failed to get type for %s', x)
+                    #     continue
+                    # if self.type is None:
+                    #     self.type = t
+                    # elif t != self.type:
+                    #     logger.info('Mixed analysis type for %s. Discard', x)
+                    #     single_flag = False
+                    #     continue
                     self.target.append(x)
 
             self.id_list = create_id(self.target)
